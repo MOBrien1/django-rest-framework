@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Project, Pledge, Donations, DonationItems
+from .models import (
+    Project, 
+    Pledge, 
+    Donations, 
+    DonationItems,
+    Category,
+)
 
 class ProjectSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()
@@ -69,4 +75,10 @@ class DonationItemsSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return DonationItems.objects.create(**validated_data)
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
 

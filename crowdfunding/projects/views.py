@@ -1,10 +1,17 @@
 from django.http import Http404
-from rest_framework import status, permissions
+from rest_framework import status, permissions, generics
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Project, Pledge, Donations, DonationItems
-from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer, DonationsSerializer, DonationItemsSerializer
+from .serializers import (
+    ProjectSerializer, 
+    CategorySerializer, 
+    PledgeSerializer, 
+    ProjectDetailSerializer, 
+    DonationsSerializer, 
+    DonationItemsSerializer
+)
 from .permissions import IsOwnerOrReadOnly
 # Create your views here.
 
@@ -133,4 +140,6 @@ class DonationItemsList(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-
+class CategoryList(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer

@@ -32,6 +32,10 @@ class Pledge(models.Model):
         on_delete=models.CASCADE,
         related_name='supporter_pledges'
     )
+    category = models.ForeignKey(
+        on_delete= models.CASCADE,
+        related_name= 'cat_pledges'
+    )
 
 # comment response system 
 #class Pledge_response(models.Model):
@@ -58,6 +62,7 @@ class Donations(models.Model):
         related_name='supporter_donation'
     )
 
-class DonationItems(models.Model):
-    item = models.CharField(max_length=100)
+class Category(models.Model):
+    name = models.CharField(unique=true)
+
 

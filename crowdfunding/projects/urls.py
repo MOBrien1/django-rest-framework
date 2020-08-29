@@ -10,6 +10,7 @@ urlpatterns = [
     path('pledges/', views.PledgeList.as_view()),
     path('donations/', views.DonationsList.as_view()),
     path('donationitems/', views.DonationItemsList.as_view()),
+    path('categories/', views.CategoryList.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
