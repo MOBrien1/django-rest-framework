@@ -87,7 +87,7 @@ class DonationItemsSerializer(DonationsSerializer):
     def create(self, validated_data):
         return DonationItems.objects.create(**validated_data)
    
-   def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
         instance.item = validated_data.get('item', instance.item)
 
     def delete(self, validated_data):
