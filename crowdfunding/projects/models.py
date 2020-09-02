@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -24,7 +25,7 @@ class Pledge(models.Model):
     project = models.ForeignKey(
         'Project',
         on_delete=models.CASCADE,
-        related_name='pledges'
+        related_name='project'
     )
     #supporter = models.CharField(max_length=200)
     supporter = models.ForeignKey(
@@ -33,6 +34,7 @@ class Pledge(models.Model):
         related_name='supporter_pledges'
     )
     category = models.ForeignKey(
+        'Category',
         on_delete= models.CASCADE,
         related_name= 'cat_pledges'
     )
@@ -63,6 +65,6 @@ class Donations(models.Model):
     )
 
 class Category(models.Model):
-    name = models.CharField(unique=true)
+    name = models.CharField(max_length=50, unique=True)
 
 

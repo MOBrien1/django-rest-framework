@@ -3,7 +3,6 @@ from .models import (
     Project, 
     Pledge, 
     Donations, 
-    DonationItems,
     Category,
 )
 
@@ -21,6 +20,22 @@ class ProjectSerializer(serializers.Serializer):
     
     def create(self, validated_data):
         return Project.objects.create(**validated_data)
+    
+    #dont think this needs delete
+    
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.seeking = validated_data.get('seeking', instance.seeking)
+        instance.post_code = validated_data.get('post_code', instance.post_code)
+        instance.suburb = validated_data.get('suburb', instance.suburb)
+        instance.image = validated_data.get('image', instance.image)
+        instance.is_open = validated_data.get('is_open', instance.is_open)
+        instance.date_created = validated_data.get('date_created', instance.date_created)
+        instance.owner = validated_data.get('owner', instance.owner)
+        instance.save()
+        return instance
+    
 
 class PledgeSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()
@@ -43,19 +58,12 @@ class PledgeSerializer(serializers.Serializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
-    
-    def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.description = validated_data.get('description', instance.description)
-        instance.seeking = validated_data.get('seeking', instance.seeking)
-        instance.post_code = validated_data.get('post_code', instance.post_code)
-        instance.suburb = validated_data.get('suburb', instance.suburb)
-        instance.image = validated_data.get('image', instance.image)
-        instance.is_open = validated_data.get('is_open', instance.is_open)
-        instance.date_created = validated_data.get('date_created', instance.date_created)
-        instance.owner = validated_data.get('owner', instance.owner)
-        instance.save()
-        return instance
+
+    def create(self, validated_data):
+        return Pledge.objects.create(**validated_data)
+
+    def delete(self, validated_data):
+        return Pledge.objects.delete(**validated_data)
 
 #Supporter field not right ID is not OWNER 
 class DonationsSerializer(serializers.Serializer):
@@ -68,17 +76,30 @@ class DonationsSerializer(serializers.Serializer):
     
     def create(self, validated_data):
         return Donations.objects.create(**validated_data)
+    
+    def delete(self, validated_data):
+        return Donations.objects.delete(**validated_data)
 
-class DonationItemsSerializer(serializers.Serializer):
+class DonationItemsSerializer(DonationsSerializer):
     id = serializers.ReadOnlyField()
     item = serializers.CharField(max_length=100)
 
     def create(self, validated_data):
         return DonationItems.objects.create(**validated_data)
+   
+   def update(self, instance, validated_data):
+        instance.item = validated_data.get('item', instance.item)
 
+    def delete(self, validated_data):
+        return Donations.objects.delete(**validated_data)
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
+    def create(self, validated_data):
+        return Category.objects.create(**validated_data)
+
+    def delete(self, validated_data):
+        return Category.objects.delete(**validated_data)

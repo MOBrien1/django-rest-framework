@@ -2,35 +2,23 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
 from .models import CustomUser
 from .serializers import CustomUserSerializer
 
-class CustomUserList(APIView):
-    
-    def get(self, request):
-          users = CustomUser.objects.all()
-          serializer = CustomUserSerializer(users, many=True)
-          return Response(serializer.data)
-            #ADD HTTP STATUS CODES
-            
-    def post(self, request):
-        serializer = CustomUserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-            return Response(serializer.errors)
+class CustomUserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CustomUser.objects.all() 
+    serializer_class = CustomUserSerializer
 
+class CustomUserList(generics.ListCreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
 
-class CustomUserDetail(APIView):
+class UserProfileList(generics.ListCreateAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
     
-    def get_object(self, pk):
-          try:
-               return CustomUser.objects.get(pk=pk)
-          except CustomUser.DoesNotExist:
-               raise Http404
-    
-    def get(self, request, pk):
-        user = self.get_object(pk)
-        serializer = CustomUserSerializer(user)
-        return Response(serializer.data)

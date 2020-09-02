@@ -3,7 +3,7 @@ from rest_framework import status, permissions, generics
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Project, Pledge, Donations, DonationItems
+from .models import Project, Pledge, Donations, Category
 from .serializers import (
     ProjectSerializer, 
     CategorySerializer, 
@@ -48,6 +48,7 @@ class ProjectDetail(APIView):
 
     def get(self, request, pk):
         project = self.get_object(pk)
+        self.check_object_permissions(request, project)
         serializer = ProjectDetailSerializer(project)
         return Response(
             serializer.data,
@@ -56,6 +57,7 @@ class ProjectDetail(APIView):
 
     def put(self, request, pk):
         project = self.get_object(pk)
+        self.check_object_permissions(request, project)
         data = request.data
         serializer = ProjectDetailSerializer(
             instance=project,
@@ -67,6 +69,7 @@ class ProjectDetail(APIView):
     
     def delete(self, request, pk):
         project = self.get_object(pk)
+        self.check_object_permissions(request, project)
         project.delete()
         return Response(status=status.HTTP_200_OK)
 
