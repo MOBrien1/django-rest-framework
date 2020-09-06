@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'rest_framework',
+    'django_filters'
     'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',

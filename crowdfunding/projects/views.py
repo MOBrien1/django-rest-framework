@@ -3,6 +3,7 @@ from rest_framework import status, permissions, generics
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Project, Pledge, Donations, Category
 from .serializers import (
     ProjectSerializer, 
@@ -17,6 +18,16 @@ from .permissions import IsOwnerOrReadOnly
 
 class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [
+            'title', 
+            'is_open',
+            'date_created',
+            'post_code',
+            'owner',
+            'suburb',
+    ]
+
     def get(self, request):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True)
@@ -34,12 +45,13 @@ class ProjectList(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-
+    
 class ProjectDetail(APIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly
         ]
+
     def get_object(self, pk):
         try:
             return Project.objects.get(pk=pk)
@@ -102,6 +114,11 @@ class PledgeList(APIView):
         pledge.delete()
         return Response(status=status.HTTP_200_OK)
 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [ 
+            'supporter',
+            'category',
+    ]
 class DonationsList(APIView):
     def get(self, request):
         donations = Donations.objects.all()
@@ -122,7 +139,12 @@ class DonationsList(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [ 
+            'item',
+            'supporter',
+            'location',
+    ]
 class DonationItemsList(APIView):
 
     def get(self, request):
@@ -144,5 +166,10 @@ class DonationItemsList(APIView):
         )
 
 class CategoryList(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = [
+            'name', 
+    ]
