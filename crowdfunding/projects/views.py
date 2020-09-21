@@ -1,9 +1,9 @@
 from django.http import Http404
 from rest_framework import status, permissions, generics
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
 from .models import Project, Pledge, Donations, Category
 from .serializers import (
     ProjectSerializer, 
@@ -119,14 +119,22 @@ class PledgeList(APIView):
             'supporter',
             'category',
     ]
-class DonationsList(APIView):
-    def get(self, request):
-        donations = Donations.objects.all()
-        serializer = DonationsSerializer(donations, many=True)
+class DonationsItem(APIView):
+    def get(self, request, pk):
+        items = self.get_object(items)
+        serializer = DonationsSerializer()
+        if serializer.is_valid():
+            serializer.save()
         return Response(
             serializer.data,
-            status=status.HTTP_200_OK)
-    
+            status=status.HTTP_200_OKAY
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        
+
     def post (self, request):
         serializer = DonationsSerializer(data=request.data)
         if serializer.is_valid():
@@ -146,7 +154,6 @@ class DonationsList(APIView):
             'location',
     ]
 class DonationItemsList(APIView):
-
     def get(self, request):
         Items = DonationItems.objects.all()
         serializer = DonationItemsSerializer(Items, many=True)
@@ -165,7 +172,7 @@ class DonationItemsList(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-class CategoryList(generics.ListAPIView):
+class CategoryList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer

@@ -9,7 +9,7 @@ from .models import (
 class ProjectSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()
     title = serializers.CharField(max_length=200)
-    description = serializers.CharField(max_length=None)
+    description = serializers.CharField(max_length=500)
     post_code = serializers.CharField(max_length=200)
     suburb = serializers.CharField(max_length=50)
     seeking = serializers.CharField(max_length=200)

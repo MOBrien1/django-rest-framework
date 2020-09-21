@@ -8,8 +8,8 @@ urlpatterns = [
     path('projects/', views.ProjectList.as_view()),
     path('projects/<int:pk>/', views.ProjectDetail.as_view()),
     path('pledges/', views.PledgeList.as_view()),
-    path('donations/', views.DonationsList.as_view()),
-    path('donationitems/', views.DonationItemsList.as_view()),
+    path('donations/', views.DonationItemsList.as_view()),
+    path('donationitems/', views.DonationsItem.as_view()),
     path('categories/', views.CategoryList.as_view()),
 ]
 

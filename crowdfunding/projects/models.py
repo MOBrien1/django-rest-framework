@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.CharField(max_length=500)
     post_code = models.CharField(max_length=200, default='Unknown')
     suburb = models.CharField(max_length=50, default='Unknown')
     seeking = models.CharField(max_length=200, default='Unknown')

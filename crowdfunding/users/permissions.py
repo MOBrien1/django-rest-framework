@@ -1,4 +1,4 @@
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -12,7 +12,7 @@ class BlacklistPermission(permissions.BasePermission):
         return not blacklisted
 
 class UserProfileView(APIView):
-    permission_classes = [IsAuthenticated|ReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, format=None):
         content = {
@@ -21,7 +21,7 @@ class UserProfileView(APIView):
         return Response(content)
 
 class CustomUserView(APIView):
-    permission_classes = [IsAuthenticated|ReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, format=None):
         content = {
