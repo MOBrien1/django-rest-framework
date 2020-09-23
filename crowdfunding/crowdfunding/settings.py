@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'rest_framework',
+<<<<<<< Updated upstream
     'django_filters',
+=======
+    'corsheaders',
+>>>>>>> Stashed changes
     'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,6 +62,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
