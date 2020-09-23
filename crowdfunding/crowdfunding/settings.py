@@ -38,11 +38,8 @@ INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'rest_framework',
-<<<<<<< Updated upstream
     'django_filters',
-=======
     'corsheaders',
->>>>>>> Stashed changes
     'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
