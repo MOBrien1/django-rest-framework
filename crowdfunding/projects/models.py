@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.CharField(max_length=500)
     post_code = models.CharField(max_length=200, default='Unknown')
     suburb = models.CharField(max_length=50, default='Unknown')
     seeking = models.CharField(max_length=200, default='Unknown')
@@ -39,9 +39,10 @@ class Pledge(models.Model):
         related_name= 'cat_pledges'
     )
 
-# comment response system 
+# comment response system not active 
 #class Pledge_response(models.Model):
-#    comment = models.CharField(max_length=200)
+#    comment_response = models.CharField(max_length=200)
+#   comment = models.ManyToMany()
 #    project = models.ForeignKey(
 #        'Project',
 #        on_delete=models.CASCADE,
@@ -50,7 +51,7 @@ class Pledge(models.Model):
 #    owner = models.ForeignKey(
 #        get_user_model(),
 #        on_delete=models.CASCADE,
-#        related_name='owner_pledge_'
+#        related_name='owner_pledge'
 #    )
 
 class Donations(models.Model):

@@ -9,7 +9,7 @@ from .models import (
 class ProjectSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()
     title = serializers.CharField(max_length=200)
-    description = serializers.CharField(max_length=None)
+    description = serializers.CharField(max_length=500)
     post_code = serializers.CharField(max_length=200)
     suburb = serializers.CharField(max_length=50)
     seeking = serializers.CharField(max_length=200)
@@ -42,7 +42,8 @@ class PledgeSerializer(serializers.Serializer):
     comment = serializers.CharField(max_length=200)
     anonymous = serializers.BooleanField()
     project_id = serializers.IntegerField()
-    supporter = serializers.CharField(max_length=200)
+    supporter = serializers.ReadOnlyField(source='supporter.id')
+    
 
     def create(self, validated_data):
         return Pledge.objects.create(**validated_data)

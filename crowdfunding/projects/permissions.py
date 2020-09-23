@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from rest_framework.permissions import BasePermission, IsAuthenticatedOrReadOnly, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,15 +20,4 @@ class BlacklistPermission(permissions.BasePermission):
         blacklisted = Blacklist.objects.filter(ip_addr=ip_addr).exists()
         return not blacklisted
 
-#class ReadOnly(BasePermission):
-    #def has_permission(self, request, view):
-        #return request.method in SAFE_METHODS
 
-#class ExampleView(APIView):
-    #permission_classes = [IsAuthenticated|ReadOnly]
-
-    #def get(self, request, format=None):
-        #content = {
-        #    'status': 'request was permitted'
-        #}
-        #return Response(content)
