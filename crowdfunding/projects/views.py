@@ -55,17 +55,14 @@ class ProjectDetail(APIView):
     def get_object(self, pk):
         try:
             project = Project.objects.get(pk=pk)
-            #self.check_object_permissions(self.request, project)
+            self.check_object_permissions(self.request, project)
             return project
         except Project.DoesNotExist:
             raise Http404
 
     def get(self, request, pk):
         project = self.get_object(pk)
-        print(project)
-        #self.check_object_permissions(request, project)
         serializer = ProjectDetailSerializer(project)
-        print(serializer.data)
         try:
             return Response(
             serializer.data,
