@@ -13,7 +13,7 @@ from .serializers import (
     DonationsSerializer, 
     DonationItemsSerializer
 )
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly
 # Create your views here.
 
 class ProjectList(APIView):
@@ -52,14 +52,24 @@ class ProjectDetail(APIView):
         IsOwnerOrReadOnly
         ]
 
+    def get_object(self, pk):
+        try:
+            project = Project.objects.get(pk=pk)
+            #self.check_object_permissions(self.request, project)
+            return project
+        except Project.DoesNotExist:
+            raise Http404
+
     def get(self, request, pk):
         project = self.get_object(pk)
-        self.check_object_permissions(request, project)
+        print(project)
+        #self.check_object_permissions(request, project)
         serializer = ProjectDetailSerializer(project)
+        print(serializer.data)
         try:
             return Response(
             serializer.data,
-            status=status.HTTP_200_OKAY
+            status=status.HTTP_200_OK
             )
         except Project.DoesNotExist:
             raise Http404
@@ -83,6 +93,9 @@ class ProjectDetail(APIView):
         return Response(status=status.HTTP_200_OK)
 
 class PledgeList(APIView):
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['supporter', 'category' ]
+
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly
@@ -96,26 +109,23 @@ class PledgeList(APIView):
     def post (self, request):
         serializer = PledgeSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(supporter=request.user)
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
-        return Response(
-        serializer.errors,
-        status=status.HTTP_400_BAD_REQUEST
-        )
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     def delete(self, request, pk):
         pledge = self.get_object(pk)
         pledge.delete()
         return Response(status=status.HTTP_200_OK)
 
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = [ 
-            'supporter',
-            'category',
-    ]
+
+
 class DonationsItem(APIView):
     def get(self, request, pk):
         items = self.get_object(items)
