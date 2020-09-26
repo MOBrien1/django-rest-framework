@@ -50,7 +50,6 @@ class PledgeSerializer(serializers.Serializer):
     
     def update(self, instance, validated_data):
         instance.comment = validated_data.get('comment', instance.comment)
-        instance.supporter = validated_data.get('supporter', instance.supporter)
         instance.save()
         return instance
 

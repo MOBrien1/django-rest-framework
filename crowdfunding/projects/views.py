@@ -52,20 +52,17 @@ class ProjectDetail(APIView):
         IsOwnerOrReadOnly
         ]
 
-    def get_object(self, pk):
-        try:
-            return Project.objects.get(pk=pk)
-        except Project.DoesNotExist:
-            raise Http404
-
     def get(self, request, pk):
         project = self.get_object(pk)
         self.check_object_permissions(request, project)
         serializer = ProjectDetailSerializer(project)
-        return Response(
+        try:
+            return Response(
             serializer.data,
             status=status.HTTP_200_OKAY
             )
+        except Project.DoesNotExist:
+            raise Http404
 
     def put(self, request, pk):
         project = self.get_object(pk)
