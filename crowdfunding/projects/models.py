@@ -39,21 +39,6 @@ class Pledge(models.Model):
         related_name= 'cat_pledges'
     )
 
-# comment response system not active 
-#class Pledge_response(models.Model):
-#    comment_response = models.CharField(max_length=200)
-#   comment = models.ManyToMany()
-#    project = models.ForeignKey(
-#        'Project',
-#        on_delete=models.CASCADE,
-#        related_name='pledges'
-#    )
-#    owner = models.ForeignKey(
-#        get_user_model(),
-#        on_delete=models.CASCADE,
-#        related_name='owner_pledge'
-#    )
-
 class Donations(models.Model):
     item = models.CharField(max_length=200)
     quantity = models.IntegerField()

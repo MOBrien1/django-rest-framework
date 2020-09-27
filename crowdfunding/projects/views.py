@@ -14,7 +14,7 @@ from .serializers import (
     DonationItemsSerializer
 )
 from .permissions import IsOwnerOrReadOnly, IsAuthenticatedOrReadOnly
-# Create your views here.
+
 
 class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -46,6 +46,7 @@ class ProjectList(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
     
+
 class ProjectDetail(APIView):
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly,
@@ -89,6 +90,7 @@ class ProjectDetail(APIView):
         project.delete()
         return Response(status=status.HTTP_200_OK)
 
+
 class PledgeList(APIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['supporter', 'category' ]
@@ -122,7 +124,6 @@ class PledgeList(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-
 class DonationsItem(APIView):
     def get(self, request, pk):
         items = self.get_object(items)
@@ -131,14 +132,13 @@ class DonationsItem(APIView):
             serializer.save()
         return Response(
             serializer.data,
-            status=status.HTTP_200_OKAY
+            status=status.HTTP_200_OK
             )
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
         
-
     def post (self, request):
         serializer = DonationsSerializer(data=request.data)
         if serializer.is_valid():
@@ -157,6 +157,8 @@ class DonationsItem(APIView):
             'supporter',
             'location',
     ]
+
+
 class DonationItemsList(APIView):
     def get(self, request):
         Items = DonationItems.objects.all()
