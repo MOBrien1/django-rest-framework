@@ -21,6 +21,7 @@ class CustomUserList(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [ 
             'username',
+            'email',
     ]
 
 class UserProfileList(generics.ListCreateAPIView):
@@ -29,13 +30,12 @@ class UserProfileList(generics.ListCreateAPIView):
     serializer_class = UserProfileSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = [ 
-            'username',
-            'location',
-            'organisation'
-    ]
+            'user',
+            'organisation',
+            'location'
+            ]
 
 class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    

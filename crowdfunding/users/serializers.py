@@ -37,4 +37,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
     
     def delete(self, validated_data):
         return UserProfile.objects.delete(**validated_data)
-    
