@@ -10,7 +10,7 @@ class CustomUser(AbstractUser):
         return self.username
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="profile")
     organisation = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=254, unique=True)
     bio = models.CharField(max_length=1000)
@@ -22,4 +22,4 @@ class UserProfile(models.Model):
 @receiver(post_save, sender=CustomUser)
 def create_related_profile(sender, instance, created, *args, **kwargs):
     if instance and created:
-        instance.profile= UserProfile.objects.create(user=instance)
+        instance.profile = UserProfile.objects.create(user=instance)
