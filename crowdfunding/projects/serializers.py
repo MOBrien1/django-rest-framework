@@ -59,12 +59,6 @@ class PledgeSerializer(serializers.Serializer):
 class ProjectDetailSerializer(ProjectSerializer):
     pledges = PledgeSerializer(many=True, read_only=True)
 
-    def create(self, validated_data):
-        return Pledge.objects.create(**validated_data)
-
-    def delete(self, validated_data):
-        return Pledge.objects.delete(**validated_data)
-
 #Supporter field not right ID is not OWNER 
 class DonationsSerializer(serializers.Serializer):
     id = serializers.ReadOnlyField()

@@ -1,7 +1,11 @@
 from rest_framework import serializers
 from .models import CustomUser, UserProfile
+from projects.serializers import PledgeSerializer, ProjectSerializer
 
 class CustomUserSerializer(serializers.ModelSerializer):
+    owner_projects = ProjectSerializer(many=True, read_only=True)
+    pledges = PledgeSerializer(many=True, read_only=True)
+
     class Meta:
         model = CustomUser
         fields = '__all__'    
@@ -19,9 +23,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return CustomUser.objects.delete(**validated_data)
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer(read_only=True)
+
     class Meta:
         model = UserProfile
         fields = '__all__'
+# better to specify fields
 
     def create(self, validated_data):
         return UserProfile.objects.create(**validated_data)

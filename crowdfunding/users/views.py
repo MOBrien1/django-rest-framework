@@ -37,5 +37,8 @@ class UserProfileList(generics.ListCreateAPIView):
 
 class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
+
+
+

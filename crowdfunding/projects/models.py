@@ -25,13 +25,13 @@ class Pledge(models.Model):
     project = models.ForeignKey(
         'Project',
         on_delete=models.CASCADE,
-        related_name='project'
+        related_name='pledges'
     )
     #supporter = models.CharField(max_length=200)
     supporter = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
-        related_name='supporter_pledges'
+        related_name='pledges'
     )
     category = models.ForeignKey(
         'Category',
