@@ -12,7 +12,6 @@ class CustomUser(AbstractUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="profile")
     organisation = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(max_length=254, unique=True)
     bio = models.CharField(max_length=1000)
     profile_pic = models.URLField()
     pet_pic = models.URLField()

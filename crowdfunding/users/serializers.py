@@ -8,15 +8,29 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'owner_projects', 'pledges')   
-
+        fields = ('username', 'first_name', 'last_name', 'email', 'owner_projects', 'pledges', 'password')   
+        extra_kwargs = {'password': {'write_only': True}}
+        
     def create(self, validated_data):
-        return CustomUser.objects.create(**validated_data)
-    
+        user = CustomUser.objects.create(username=validated_data['username'],
+                                         email=validated_data['email'])
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
+        # instance.set_password(validated_data['password'])
+
+        profile_data = validated_data.pop('profile', {})
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
         instance.save()
+
+        for (key, value) in profile_data.items():
+            setattr(instance.profile, key, value)
+        instance.profile.save()
         return instance
 
     def delete(self, validated_data):
