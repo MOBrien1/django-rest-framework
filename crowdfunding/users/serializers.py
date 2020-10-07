@@ -12,14 +12,19 @@ class CustomUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
         
     def create(self, validated_data):
-        print(validated_data)
         # create the profile - you can pass in any fields that are required here:
-        user = CustomUser.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
-        )
+        user = super(CustomUserSerializer, self).create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        print(validated_data)
         return user
+        
+        # user = CustomUser.objects.create_user(
+        #     username=validated_data['username'],
+        #     email=validated_data['email'],
+        #     password=validated_data['password']
+        # )
+        # return user
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
@@ -44,12 +49,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
+         # better to specify fields
         fields = ('user','bio', 'profile_pic', 'pet_pic', 'location', 'organisation')
-# better to specify fields
-
-    def create(self, validated_data):
-        return UserProfile.objects.create(**validated_data)
-
+           
     def update(self, instance, validated_data):
         instance.bio = validated_data.get('bio', instance.bio)
         instance.profile_pic = validated_data.get('profile_pic', instance.profile_pic)
