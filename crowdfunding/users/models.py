@@ -21,4 +21,5 @@ class UserProfile(models.Model):
 @receiver(post_save, sender=CustomUser)
 def create_related_profile(sender, instance, created, *args, **kwargs):
     if instance and created:
-        instance.profile = UserProfile.objects.create(user=instance)
+        # instance.profile = UserProfile.objects.create(user=instance)
+        UserProfile.objects.create(user=instance)
