@@ -11,20 +11,23 @@ class BlacklistPermission(permissions.BasePermission):
         blacklisted = Blacklist.objects.filter(ip_addr=ip_addr).exists()
         return not blacklisted
 
-class UserProfileView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get(self, request, format=None):
-        content = {
-            'status': 'request was permitted'
-        }
-        return Response(content)
 
-class CustomUserView(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+#dont think i need this usign generics
+# class UserProfileView(APIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get(self, request, format=None):
-        content = {
-            'status': 'request was permitted'
-        }
-        return Response(content)
+#     def get(self, request, format=None):
+#         content = {
+#             'status': 'request was permitted'
+#         }
+#         return Response(content)
+
+# class CustomUserView(APIView):
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+#     def get(self, request, format=None):
+#         content = {
+#             'status': 'request was permitted'
+#         }
+#         return Response(content)
