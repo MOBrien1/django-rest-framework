@@ -15,7 +15,7 @@ class CustomUserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CustomUserSerializer
 
 class CustomUserList(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    #permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     filter_backends = [DjangoFilterBackend]
