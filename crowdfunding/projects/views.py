@@ -85,8 +85,6 @@ class ProjectDetail(APIView):
             serializer.save()
             return Response(status=status.HTTP_200_OK)
         
-        except instance.DoesNotExist:
-            raise Http404
     
     def delete(self, request, pk):
         project = self.get_object(pk)
