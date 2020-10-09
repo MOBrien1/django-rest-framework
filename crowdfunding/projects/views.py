@@ -80,9 +80,13 @@ class ProjectDetail(APIView):
             instance=project,
             data=data,
             partial=True
-          )
+            )
         if serializer.is_valid():
             serializer.save()
+            return Response(status=status.HTTP_200_OK)
+        
+        except instance.DoesNotExist:
+            raise Http404
     
     def delete(self, request, pk):
         project = self.get_object(pk)
@@ -125,7 +129,7 @@ class PledgeList(APIView):
 
 
 class DonationsItem(APIView):
-    def get(self, request, pk):
+    def get(self, request):
         items = self.get_object(items)
         serializer = DonationsSerializer()
         if serializer.is_valid():
