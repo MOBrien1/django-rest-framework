@@ -126,7 +126,7 @@ class PledgeList(APIView):
         return Response(status=status.HTTP_200_OK)
 
 
-class DonationsItem(APIView):
+class DonationItems(APIView):
     def get(self, request):
         items = self.get_object(items)
         serializer = DonationsSerializer()
